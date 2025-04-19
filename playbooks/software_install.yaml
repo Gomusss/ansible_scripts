@@ -16,7 +16,7 @@
       - software-properties-common
       - ca-certificates
       - gnupg
-      - ndcu
+      - ncdu
       - mc
 
 
