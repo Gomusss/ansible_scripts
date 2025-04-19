@@ -1,0 +1,37 @@
+---
+- name: Install common software on Ubuntu servers
+  hosts: mikrus_servers
+  become: yes
+
+  vars:
+    common_packages:
+      - curl
+      - git
+      - htop
+      - vim
+      - unzip
+      - wget
+      - net-tools
+      - build-essential
+      - software-properties-common
+      - ca-certificates
+      - gnupg
+      - ndcu
+      - mc
+
+
+  tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600  # 1 hour
+
+    - name: Upgrade all packages
+      ansible.builtin.apt:
+        upgrade: dist
+        autoremove: yes
+
+    - name: Install common software
+      ansible.builtin.apt:
+        name: "{{ common_packages }}"
+        state: present

@@ -1,0 +1,25 @@
+---
+- name: Ensure the user exists
+  ansible.builtin.user:
+    name: "{{ new_username }}"
+    shell: /bin/bash
+    groups: sudo
+    append: yes
+    password: "{{ new_password }}"
+
+- name: Create .ssh directory
+  ansible.builtin.file:
+    path: "/home/{{ new_username }}/.ssh"
+    state: directory
+    owner: "{{ new_username }}"
+    group: "{{ new_username }}"
+    mode: '0700'
+
+- name: Add SSH public key
+  ansible.builtin.copy:
+    content: "{{ new_ssh_key }}"
+    dest: "/home/{{ new_username }}/.ssh/authorized_keys"
+    owner: "{{ new_username }}"
+    group: "{{ new_username }}"
+    mode: '0600'
+  when: new_ssh_key is defined
